@@ -1,3 +1,18 @@
 body {
     background: no-repeat url('../images/inicio/inicio.jpg');
 }
+
+.imgLogo {
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+#start {
+    margin-top: 50px;
+    margin-left: 50%;
+}
+
+#coin {
+    margin-top: 5px;
+    margin-left: 50%;
+}

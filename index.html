@@ -14,17 +14,23 @@
   <div class="container" >
     <div class="row" style="padding:0; margin:0">
       <div class="col-8" style=" padding:0; margin:0" >
-          <canvas id="canvas" width="850" height="450" style=" margin-top:100px"></canvas>
+          <video id ="videoInsertCoin" src="./video/intro.mp4" width="850" height="450" autoplay loop  style="margin-top: 100px"></video>
+          <video id ="videoStart" src="./video/start.mp4" style="visibility: hidden"></video>
+
+          <canvas id="canvas" style="visibility: hidden"></canvas> 
       </div>
        <div class="col-4" style=" padding:0; margin:0">
-        <img src="./images/pixlr-bg-result.png">
+        <img class="imgLogo" src="./images/pixlr-bg-result.png">
         <br>
-          <button  id="start" >START</button>
+          <button  id="start" style="visibility: hidden" >START</button>
+          <button id="coin" > INSERT COIN</button>
       </div>
     </div>
   </div>
+  <script src="./js/clases/sprite.js"> </script>
 
-
+  <script src="./js/clases/rebels.js"> </script>
+  <script src="./js/clases/bonus.js"> </script>
   <script src="./js/clases/warVeterans.js"> </script>
   <script src="./js/clases/players.js"> </script>
   <script src="./js/clases/worlds.js"> </script>

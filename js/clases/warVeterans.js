@@ -1,25 +1,52 @@
-class HeroeComming {
-    constructor(width, height) {
-        this.x = 5;
-        this.y = 0;
-        this.width = width;
-        this.height = height;
-        this.image = new Image();
-        this.image.src = './images/heroes/heroComming.png';
+class Heroe extends Sprite {
+    constructor(x, y, width, height) {
+
+        const src = './images/heroes/heroe.png';
+
+        super(x, y, 58, 55, width, height, 16, src, 9, 0);
     }
 
-    draw() {
-        if (this.x < 329) {
-            this.x += 36;
-        }
-
-        //5
-        console.log(this.x);
-        ctx.drawImage(this.image,
-            this.x, 5,
-            36, 46,
-            15, 25,
-            50, 85);
-
+    stay() {
+        console.log("sta veterran")
+        this.numSprites = 9;
+        this.spriteIndex = 0;
+        this.row = 1;
+        this.speed = 10;
     }
+    showing() {
+        this.numSprites = 10;
+        this.spriteIndex = 0;
+        this.row = 2;
+        this.speed = 10;
+    }
+
+    thankYou() {
+        this.numSprites = 14;
+        this.spriteIndex = 0;
+        this.row = 3;
+        this.speed = 10;
+    }
+
+    running() {
+        this.numSprites = 8;
+        this.spriteIndex = 0;
+        this.row = 4;
+        this.speed = 10;
+    }
+
+    walking() {
+        this.numSprites = 12;
+        this.spriteIndex = 0;
+        this.row = 5;
+        this.speed = 10;
+    }
+
+    free() {
+        this.numSprites = 10;
+        this.spriteIndex = 0;
+        this.row = 6;
+        this.speed = 10;
+    }
+
+
 }

@@ -25,13 +25,11 @@ class MisionOne {
 
     draw() {
 
-        /*if (this.x < -canvas.width) {
-            this.x = 0;
-        }
-        this.x++;*/
-        //la y en algun punto sube 
-
-        ctx.drawImage(this.image, this.x, 900, 350, 215, 0, this.y, this.width, this.height);
+        ctx.drawImage(this.image,
+            this.x, 900,
+            350, 215,
+            0, this.y,
+            this.width, this.height);
 
     }
 }
