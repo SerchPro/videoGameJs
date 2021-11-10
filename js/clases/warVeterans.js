@@ -1,13 +1,19 @@
 class Heroe extends Sprite {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, row) {
 
         const src = './images/heroes/heroe.png';
 
-        super(x, y, 58, 55, width, height, 16, src, 9, 0);
+        super(x, y, 58, 55, width, height, 16, src, 5, row);
+    }
+
+    freeVeteran() {
+        this.numSprites = 9;
+        this.spriteIndex = 0;
+        this.row = 0;
+        this.speed = 10;
     }
 
     stay() {
-        console.log("sta veterran")
         this.numSprites = 9;
         this.spriteIndex = 0;
         this.row = 1;

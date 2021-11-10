@@ -17,7 +17,7 @@ class Sprite {
     }
 
     draw() {
-        console.log(
+        /*console.log(
             this.x,
             this.y,
             this.width,
@@ -30,16 +30,13 @@ class Sprite {
             this.sx,
             this.sy,
             this.row
-        )
+        )*/
         ctx.drawImage(this.image,
             (this.spriteIndex * this.sx), (this.row * this.sy),
             this.sx, this.sy,
             this.x, this.y,
             this.width, this.height);
 
-    }
-
-    update() {
         this.count += 1;
         if (this.count > this.speed) {
             this.count = 0;
@@ -49,5 +46,8 @@ class Sprite {
                 this.spriteIndex = 0;
             }
         }
+
     }
+
+
 }

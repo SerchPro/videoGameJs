@@ -1,9 +1,13 @@
 class MarcoRossi extends Sprite {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, row) {
 
         const src = './images/players/MarcoRossi/marcor.png';
 
-        super(x, y, 49, 47, width, height, 16, src, 4, 0);
+        super(x, y, 49, 47, width, height, 16, src, 4, row);
+    }
+
+    vanish() {
+        this.row = -1;
     }
 
     stay() {
@@ -26,12 +30,12 @@ class MarcoRossi extends Sprite {
     }
 
     walking(sideWalk) {
-        if (sideWalk === 'right' && walking) {
+        if (sideWalk === 'right' && walking == 1) {
             console.log("walking right")
             this.numSprites = 7;
             this.spriteIndex = 0;
             this.row = 1;
-            this.speed = 20;
+            this.speed = 10;
         } else if (sideWalk === 'left') {
             console.log("walking left")
 
@@ -45,19 +49,17 @@ class MarcoRossi extends Sprite {
         this.speed = 10;
     }
     down() {
-        /*this.numSprites = 11;
-        this.spriteIndex = 0;
-        this.row = 3;
-        this.speed = 10;*/
-
         this.numSprites = 11;
         this.spriteIndex = 0;
-        this.row = 4;
-        this.speed = 20;
-
+        this.row = 3;
+        this.speed = 10;
     }
 
-    drawMarcoShootingUp() {
-
+    deadKnife() {
+        this.numSprites = 19;
+        this.spriteIndex = 0;
+        this.row = 6;
+        this.speed = 8;
     }
+
 }

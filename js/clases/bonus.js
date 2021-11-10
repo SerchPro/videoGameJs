@@ -1,86 +1,95 @@
-class Pig {
-    constructor(x, y, width, height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.image = new Image();
-        this.image.src = './images/common/bonusSlug.png';
-        this.spriteIndex = 0;
-        this.count = 0;
-        this.numSprites = 19;
-        this.sx = 35.3;
-        this.ad = 0;
+class Bonus extends Sprite {
+    constructor(x, y, width, height, row) {
+
+        const src = './images/common/common.png';
+
+        super(x, y, 57, 50, width, height, 18, src, 18, row);
     }
 
-    draw() {
-        this.count += 1;
-        if (this.count > 12) {
-            this.count = 0;
-            if (this.spriteIndex < this.numSprites - 1) {
-                this.spriteIndex += 1;
-            } else {
-                this.spriteIndex = 0;
-            }
-        }
-        ctx.drawImage(this.image,
-            (this.spriteIndex * this.sx), 865,
-            this.sx, 30,
-            this.x, this.y,
-            this.width, this.height);
 
+    collision(marco) {
+        return (
+            this.x < marco.x + marco.width &&
+            this.x + this.width > marco.x &&
+            this.y < marco.y + marco.height &&
+            this.y + this.height > marco.y
+        )
     }
 }
 
-class Fish {
+class Rock {
+
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.image = new Image();
-        this.image.src = './images/common/bonusSlug.png';
-        this.spriteIndex = 0;
-        this.count = 0;
-        this.numSprites = 6;
-        this.sx = 33;
+        this.image.src = './images/common/common.png';
     }
 
     draw() {
-        this.count += 1;
-        if (this.count > 12) {
-            this.count = 0;
-            if (this.spriteIndex < this.numSprites - 1) {
-                this.spriteIndex += 1;
-            } else {
-                this.spriteIndex = 0;
-            }
-        }
         ctx.drawImage(this.image,
-            0, 437,
-            this.sx, 16,
+            0, 216,
+            75, 65,
             this.x, this.y,
             this.width, this.height);
-
     }
 }
 
-class NewGun {
+
+class Header {
+
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.image = new Image();
-        this.image.src = './images/common/bonusSlug.png';
-
+        this.image.src = './images/common/common.png';
     }
 
     draw() {
-
         ctx.drawImage(this.image,
-            26, 240,
-            24, 30,
+            92, 226,
+            75, 40,
+            this.x, this.y,
+            this.width, this.height);
+    }
+}
+
+class Counter {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = './images/common/common.png';
+    }
+
+    draw(number) {
+        ctx.drawImage(this.image,
+            (52.5 * number), 165,
+            45, 45,
+            this.x, this.y,
+            this.width, this.height);
+    }
+}
+class Life {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = './images/common/common.png';
+    }
+
+    draw(number) {
+        ctx.drawImage(this.image,
+            (40 * number), 286,
+            45, 45,
             this.x, this.y,
             this.width, this.height);
 

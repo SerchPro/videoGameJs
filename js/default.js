@@ -8,9 +8,12 @@ let movementsArr = [];
 let bombs = 0;
 let counterLife = 60;
 const music = new Audio('./audio/MainTheme.webm');
+const coinSound = new Audio('./audio/coin.mp3');
 let shooting = false;
 let throwingGrenades = false;
-let walking = false;
+let walking = 0;
+let knife = 0;
+let scream = 0;
 let weapons = [{
         'id': 0,
         'name': 'handGuns',
@@ -27,4 +30,6 @@ let weapons = [{
         'bullets': 30
     }
 ];
+
+
 //console.log("entre defaults")
