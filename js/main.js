@@ -137,16 +137,34 @@ function updatePositions() {
             lifes -= 1;
         }
     }
+
+
+    if (veteranOne.collision(marco)) {
+        if ((frames % 100 === 0)) {
+            veteranOne.free();
+            veteranOne.showing()
+                //marco.vanish();
+        }
+    } else if (veteranTwo.collision(marco)) {
+        if ((frames % 100 === 0)) {
+            veteranTwo.freeVeteran();
+            veteranTwo.showing()
+                //marco.vanish();
+        }
+    }
 }
 
 function rebelMove() {
     if ((frames % 10 === 0)) {
+        console.log(rebel3.x)
         if (rebel3.x > 400 && scream == 0) {
             rebel3.x -= 10;
+            console.log("resta")
         } else {
             rebel3.x += 10;
             scream += 1;
             rebel3.scream();
+            console.log(rebel3.x);
         }
     }
 

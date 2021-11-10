@@ -54,5 +54,15 @@ class Heroe extends Sprite {
         this.speed = 10;
     }
 
+    collision(marco) {
+        //console.log(this.x, marco.x, marco.width, this.y, marco.y, marco.height)
+        return (
+            this.x < marco.x + marco.width &&
+            this.x + this.width > marco.x &&
+            this.y < marco.y + marco.height &&
+            this.y + this.height > marco.y
+        );
+    }
+
 
 }
