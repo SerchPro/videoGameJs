@@ -5,7 +5,7 @@ class EndGame {
         this.width = width;
         this.height = height;
         this.image = new Image();
-        this.image.src = './images/Backgrounds/gameOver.png';
+        this.image.src = './images/Backgrounds/gameOVer.png';
     }
 
     draw() {

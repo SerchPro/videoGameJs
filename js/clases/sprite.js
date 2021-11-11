@@ -31,6 +31,7 @@ class Sprite {
             this.sy,
             this.row
         )*/
+        /*console.log(this.spriteIndex, this.sx, this.spriteIndex * this.sx, this.row, this.image.src)*/
         ctx.drawImage(this.image,
             (this.spriteIndex * this.sx), (this.row * this.sy),
             this.sx, this.sy,

@@ -27,6 +27,7 @@ document.getElementById('coin').addEventListener('click', function() {
 document.getElementById("start").onclick = function() {
     coinSound.pause();
     start.style.visibility = 'hidden';
+    restart.style.visibility = 'visible';
     video = document.getElementById('videoStart');
     if (video) {
         padre = video.parentNode;
@@ -35,7 +36,6 @@ document.getElementById("start").onclick = function() {
         canvas.width = 850;
         canvas.height = 450;
         canvas.style = 'margin-top:100px;';
-
         insertCoins();
     } else {
         alert("Ocurrio un error!! ");
@@ -48,66 +48,97 @@ document.getElementById("start").onclick = function() {
     startGame();
 };
 
+
+document.getElementById("restart").onclick = function() {
+    location.reload();
+};
+
 function startGame() {
     music.play();
     music.loop = true;
     requestId = requestAnimationFrame(update);
 }
 
+
 function insertCoins() {
     /* Crear fondos*/
     gameOver = new EndGame(canvas.width, canvas.height);
     bg = new MisionOne(canvas.width, canvas.height);
-    header = new Header(40, 20, 100, 100);
-    life = new Life(60, 20, 85, 85);
-    counterUnit = new Counter(250, 20, 95, 95);
-    counterDent = new Counter(270, 20, 95, 95);
+    header = new Header(40, 20, 100, 75);
+    life = new Life(80, 30, 80, 75);
+    Arms = new Arms(150, 20, 100, 75);
+    counterUnit = new Counter(250, 20, 100, 170);
+    counterDent = new Counter(270, 20, 100, 170);
     /*jugador*/
-    marco = new MarcoRossi(140, 240, 85, 110, 0);
-    /*Veteranos */
-    veteranOne = new Heroe(2400, 130, 115, 125, 1);
-    veteranTwo = new Heroe(2700, 220, 115, 125, 0);
+    marco = new MarcoRossi(140, 250, 85, 110, 0);
+
     /* Bonus */
     rock = new Rock(1350, 245, 155, 145);
-    pig = new Bonus(1480, 250, 90, 115, 0);
-    /*Rebels */
-    rebel1 = new Rebel(1550, 220, 125, 140, 5);
-    rebel2 = new Rebel(1000, 220, 125, 140, 5);
-    rebel3 = new Rebel(800, 220, 125, 140, 4);
-    /*rebel4 = new Rebel(1550, 220, 125, 140, 5);
-    rebel5 = new Rebel(1550, 220, 125, 140, 5);
-    rebel6 = new Rebel(1550, 220, 125, 140, 5);
-    rebel7 = new Rebel(1550, 220, 125, 140, 5);
-    rebel8 = new Rebel(1550, 220, 125, 140, 5);
-    rebel9 = new Rebel(1550, 220, 125, 140, 5);
-    rebel10 = new Rebel(1550, 220, 125, 140, 5);*/
+    pig = new Pig(1480, 250, 90, 115, 0);
+
+    //ednge1 = new Ednge()
+    generateRebels();
+    generateVeterans();
 
 }
 
-function update() {
-    frames++;
-    ctx.clearRect(0, 0, canvas.width, canvas.height); //limpiar el canvas
-    bg.draw();
-    header.draw();
-    life.draw(1);
-    counterUnit.draw(5);
-    counterDent.draw(9);
 
-    marco.draw();
-    pig.draw();
-    rock.draw();
-    rebel1.draw();
-    rebel2.draw();
-    rebel3.draw();
+function generateVeterans() {
+    veteranOne = new Heroe(2400, 130, 115, 125, 1);
+    veteranTwo = new Heroe(2700, 220, 115, 125, 0);
+    veterans = [veteranOne, veteranTwo];
+}
 
-    veteranOne.draw();
-    veteranTwo.draw();
+function drawVeterans() {
+    veterans.forEach((veteran, index_veteran) => {
+        veteran.draw()
 
-    updatePositions();
-    rebelMove();
-    if (requestId) {
-        requestId = requestAnimationFrame(update);
-    }
+        if (veteran.x + veteran.width < 0) {
+            veterans.splice(index_veteran, 1)
+        }
+    });
+}
+
+
+function generateRebels() {
+    rebel1 = new Rebel(1550, 220, 125, 140, 5);
+    rebel2 = new Rebel(1000, 220, 125, 140, 5);
+    rebel3 = new Rebel(800, 220, 125, 140, 4);
+    rebels = [rebel1, rebel2, rebel3]
+}
+
+function drawRebels() {
+    rebels.forEach((rebel, index_rebel) => {
+        rebel.draw();
+
+        if (rebel.x + rebel.width < 0) {
+            rebels.splice(index_rebel, 1)
+        }
+    });
+}
+
+function generateShoots() {
+    fire = new Fire(marco.x + 100, marco.y + 20, 50, 50);
+    fires.push(fire);
+}
+
+
+function shootingf() {
+    fires.forEach((fire, index_fire) => {
+        fire.draw();
+
+        rebels.forEach((rebel, index_rebel) => {
+
+            if (fire.collision(rebel)) {
+                fires.splice(index_fire, 1);
+                //mostrar soldado
+                rebels.splice(index_rebel, 1);
+                rebelDead.play();
+                life.draw(lifes);
+            }
+        });
+
+    });
 }
 
 function updatePositions() {
@@ -116,16 +147,15 @@ function updatePositions() {
         bg.x >= (66.80 * 1520 / 100) && bg.x <= (71.8 * 1520 / 100) ||
         bg.x >= (94.5 * 1520 / 100) && bg.x <= (99.2 * 1520 / 100)) {
         marco.y = 220;
-    } else if (bg.x > (38.8 * 1520) / 100) {
-        marco.y = 295;
-    } else {
-        marco.y = 250;
+        console.log('primer salto');
     }
 
     if (rebel2.collision(marco)) {
         if ((frames % 100 === 0)) {
             rebel2.knife();
             marco.deadKnife();
+            marcoDead.play();
+            endGame();
             //marco.vanish();
             lifes -= 1;
         }
@@ -133,6 +163,8 @@ function updatePositions() {
         if ((frames % 100 === 0)) {
             rebel3.knife();
             marco.deadKnife();
+            marcoDead.play();
+            endGame();
             //marco.vanish();
             lifes -= 1;
         }
@@ -142,38 +174,53 @@ function updatePositions() {
     if (veteranOne.collision(marco)) {
         if ((frames % 100 === 0)) {
             veteranOne.free();
-            veteranOne.showing()
-                //marco.vanish();
+            veteranOne.showing();
+            tenkiu.play();
+            //marco.vanish();
         }
     } else if (veteranTwo.collision(marco)) {
         if ((frames % 100 === 0)) {
             veteranTwo.freeVeteran();
-            veteranTwo.showing()
-                //marco.vanish();
+            veteranTwo.showing();
+            tenkiu.play();
+            //marco.vanish();
         }
+    }
+
+    if (rock.collision(marco)) {
+        console.log("colision con la roca marco ", marco.x, "bgx", bg.x)
+    }
+
+    if (pig.collision(marco)) {
+        pig.dead();
+        score += 100;
     }
 }
 
 function rebelMove() {
     if ((frames % 10 === 0)) {
-        console.log(rebel3.x)
+        //console.log(rebel3.x)
         if (rebel3.x > 400 && scream == 0) {
             rebel3.x -= 10;
-            console.log("resta")
+            //console.log("resta")
         } else {
             rebel3.x += 10;
             scream += 1;
             rebel3.scream();
-            console.log(rebel3.x);
+            //rebelScream.play();
+            //console.log(rebel3.x);
         }
     }
 
 }
 
 function endGame() {
-    music.pause();
-    gameOver.draw();
-    requestId = undefined;
+    if (lifes <= 0) {
+        music.pause();
+        gameOver.draw();
+        requestId = undefined;
+    }
+
 
 }
 
@@ -194,6 +241,10 @@ function right() {
     } else if (marco.x < 630) {
         marco.x += 15;
     }
+
+    if (bg.x > (38.8 * 1520) / 100) {
+        marco.y = 295;
+    }
     //console.log("bg", bg.x, "marco", marco.x, "pig", pig.x, "rebel3", rebel3.x);
 }
 
@@ -201,7 +252,7 @@ function right() {
 
 function down() {
     marco.down();
-    console.log("movimiento hacia abajo");
+    //console.log("movimiento hacia abajo");
 }
 
 function left() {
@@ -209,7 +260,7 @@ function left() {
         marco.x -= 15;
         bg.x -= 5;
     }*/
-    console.log("movimiento a la izquierda", bg.x, marco.x);
+    //console.log("movimiento a la izquierda", bg.x, marco.x);
 }
 
 function up() {
@@ -218,8 +269,9 @@ function up() {
 }
 
 function jump() {
-    //marco.y = 220;
-    console.log("movimiento", marco.y);
+    marco.jump();
+    marco.y -= 70;
+    //console.log("movimiento", marco.y);
 }
 
 
@@ -250,7 +302,10 @@ addEventListener("keydown", (e) => {
             jump();
             break;
         case 65:
-            down();
+            generateShoots();
+            marco.shoot();
+            //fireMarco.x = marco.x + 20;
+            //fireMarco.y = marco.y - 50;
             console.log("disparo con a");
             break;
         case 83:
@@ -263,10 +318,42 @@ addEventListener("keydown", (e) => {
 });
 
 addEventListener("keyup", (e) => {
-    /*if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 39) {
+    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 65) {
         if (marco) {
             walking = 0;
             marco.stay();
         };
-    }*/
+    }
+    if (e.keyCode === 32) {
+        if (marco) {
+            marco.stay();
+            marco.y += 70;
+
+        };
+    }
 })
+
+function update() {
+    frames++;
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //limpiar el canvas
+    bg.draw();
+    header.draw();
+    //life.draw(lifes);
+    life.draw(lifes);
+    Arms.draw()
+    counterUnit.draw(5);
+    counterDent.draw(9);
+
+    marco.draw();
+    pig.draw();
+    rock.draw();
+    drawRebels();
+    drawVeterans();
+
+    shootingf();
+    updatePositions();
+    rebelMove();
+    if (requestId) {
+        requestId = requestAnimationFrame(update);
+    }
+}

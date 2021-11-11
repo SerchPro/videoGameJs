@@ -3,30 +3,28 @@ class MarcoRossi extends Sprite {
 
         const src = './images/players/MarcoRossi/marcor.png';
 
-        super(x, y, 49, 47, width, height, 16, src, 4, row);
+        super(x, y, 51, 48, width, height, 16, src, 4, row);
     }
 
     vanish() {
-        this.row = -1;
+        this.row = 0;
     }
 
     stay() {
+        console.log("stay")
+        this.numSprites = 4;
+        this.spriteIndex = 0;
+        this.row = 0;
+        this.speed = 16;
 
-        if (shooting) {
-            console.log("shooting");
-            this.numSprites = 9;
-            this.spriteIndex = 0;
-            this.row = 5;
-            this.speed = 16;
-        } else if (throwingGrenades) {
-            console.log("shooting")
-        } else {
-            console.log("stay")
-            this.numSprites = 4;
-            this.spriteIndex = 0;
-            this.row = 0;
-            this.speed = 16;
-        }
+    }
+
+    shootingDown() {
+        console.log("shooting");
+        this.numSprites = 9;
+        this.spriteIndex = 0;
+        this.row = 5;
+        this.speed = 16;
     }
 
     walking(sideWalk) {
@@ -36,9 +34,6 @@ class MarcoRossi extends Sprite {
             this.spriteIndex = 0;
             this.row = 1;
             this.speed = 10;
-        } else if (sideWalk === 'left') {
-            console.log("walking left")
-
         }
     }
 
@@ -56,10 +51,32 @@ class MarcoRossi extends Sprite {
     }
 
     deadKnife() {
-        this.numSprites = 19;
+        this.numSprites = 13;
         this.spriteIndex = 0;
         this.row = 6;
         this.speed = 8;
     }
+    shoot() {
+        this.numSprites = 10;
+        this.spriteIndex = 0;
+        this.row = 7;
+        this.speed = 5;
+
+    }
+    jump() {
+        this.numSprites = 6;
+        this.spriteIndex = 0;
+        this.row = 8;
+        this.speed = 8;
+    }
+
+    fire() {
+        this.numSprites = 61;
+        this.spriteIndex = 0;
+        this.row = 9;
+        this.speed = 16;
+    }
+
 
 }
+// 50 100
