@@ -8,6 +8,7 @@ let movementsArr = [];
 let bombs = 0;
 let counterLife = 60;
 
+let die = 0;
 
 let shooting = 0;
 let throwingGrenades = false;
@@ -15,8 +16,10 @@ let walking = 0;
 let knife = 0;
 let scream = 0;
 let fires = [];
+let firesEnemies = [];
 let rebels = [];
 let veterans = [];
+let players = [];
 let weapons = [{
         'id': 0,
         'name': 'handGuns',
@@ -41,5 +44,8 @@ const tenkiu = new Audio('./audio/tenkiu.mp3');
 const marcoDead = new Audio('./audio/marcoDead.mp3');
 const rebelDead = new Audio('./audio/rebelDead.mp3');
 const rebelScream = new Audio('./audio/rebelScream.mp3');
+
+
+
 
 //console.log("entre defaults")

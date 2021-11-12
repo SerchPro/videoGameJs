@@ -62,6 +62,13 @@ function startGame() {
 
 function insertCoins() {
     /* Crear fondos*/
+    /*this.currentTime = 0;
+    this.intervalId = setInterval(() => {
+        currentTime += 1
+
+
+    }, 1000);*/
+
     gameOver = new EndGame(canvas.width, canvas.height);
     bg = new MisionOne(canvas.width, canvas.height);
     header = new Header(40, 20, 100, 75);
@@ -70,16 +77,17 @@ function insertCoins() {
     counterUnit = new Counter(250, 20, 100, 170);
     counterDent = new Counter(270, 20, 100, 170);
     /*jugador*/
-    marco = new MarcoRossi(140, 250, 85, 110, 0);
 
     /* Bonus */
     rock = new Rock(1350, 245, 155, 145);
     pig = new Pig(1480, 250, 90, 115, 0);
 
-    //ednge1 = new Ednge()
+    /* Edges */
+    edge1 = new Edges(2100, 320, 130, 10)
+        //ednge1 = new Ednge()
     generateRebels();
     generateVeterans();
-
+    generatePlayers(140, 250);
 }
 
 
@@ -101,72 +109,124 @@ function drawVeterans() {
 
 
 function generateRebels() {
-    rebel1 = new Rebel(1550, 220, 125, 140, 5);
-    rebel2 = new Rebel(1000, 220, 125, 140, 5);
-    rebel3 = new Rebel(800, 220, 125, 140, 4);
-    rebels = [rebel1, rebel2, rebel3]
+
+    rebel1 = new Rebel(850, 220, 125, 140, 16, 4);
+    rebel2 = new Rebel(760, 220, 125, 140, 16, 4);
+    rebel3 = new Rebel(800, 220, 125, 140, 16, 4);
+    rebel4 = new Rebel(1550, 220, 125, 140, 12, 5);
+    rebel5 = new Rebel(1000, 220, 125, 140, 4, 7, true);
+
+    rebels = [rebel1, rebel2, rebel3, rebel4, rebel5];
 }
 
 function drawRebels() {
     rebels.forEach((rebel, index_rebel) => {
         rebel.draw();
+        //console.log(rebel)
+        if (rebel.shoot) {
+            if (frames % 160 === 0) {
+                generateFireEnemies(rebel.x, rebel.y);
+            }
 
-        if (rebel.x + rebel.width < 0) {
-            rebels.splice(index_rebel, 1)
         }
     });
 }
 
 function generateShoots() {
-    fire = new Fire(marco.x + 100, marco.y + 20, 50, 50);
+    fire = new Fire(marco.x + 100, marco.y + 30, 30, 30);
     fires.push(fire);
 }
 
+function generateFireEnemies(x, y) {
+    console.log("Generating", rebel3.x - 100)
+    fire = new FireEnemies(x - 35, y + 70, 40, 40);
+    firesEnemies.push(fire);
+}
+
+
+function shootingEnemies() {
+
+    firesEnemies.forEach((fire, index_fire) => {
+        fire.draw();
+
+        players.forEach((player, index_player) => {
+            if (fire.x + fire.width < 0) {
+                firesEnemies.splice(index_fire, 1);
+            }
+
+            if (fire.collision(player)) {
+                player.deadKnife();
+                players.splice(index_player, 1);
+                marcoDead.play();
+
+            }
+        });
+    });
+
+
+}
 
 function shootingf() {
     fires.forEach((fire, index_fire) => {
         fire.draw();
 
         rebels.forEach((rebel, index_rebel) => {
+            if (fire.x + fire.width < 0) {
+                fires.splice(index_fire, 1)
+            }
 
             if (fire.collision(rebel)) {
+                rebelDead.play();
                 fires.splice(index_fire, 1);
                 //mostrar soldado
-                rebels.splice(index_rebel, 1);
-                rebelDead.play();
-                life.draw(lifes);
+                rebel.dead();
+                rebel.shoot = false;
+                setTimeout(function() {
+                    rebels.splice(index_rebel, 1);
+                }, 500);
+
             }
         });
+    });
+}
 
+function generatePlayers(x, y) {
+    marco = new MarcoRossi(x, y, 85, 110, 0);
+    players = [marco];
+}
+
+function drawPlayer() {
+    players.forEach((player, index_player) => {
+        player.draw();
+        rebels.forEach((rebel, index_rebel) => {
+            if (player.collision(rebel)) {
+                rebel.knife();
+                players.splice(index_player, 1);
+                marcoDead.play();
+                //endGame(player.x, player.y);
+            }
+
+        });
     });
 }
 
 function updatePositions() {
 
-    if (bg.x >= (50.65 * 1520 / 100) && bg.x <= (54.8 * 1520 / 100) ||
-        bg.x >= (66.80 * 1520 / 100) && bg.x <= (71.8 * 1520 / 100) ||
-        bg.x >= (94.5 * 1520 / 100) && bg.x <= (99.2 * 1520 / 100)) {
-        marco.y = 220;
-        console.log('primer salto');
+    if (bg.x >= (50.65 * 1520 / 100)) {
+        edge1.draw();
     }
+    //bg.x >= (50.65 * 1520 / 100) && bg.x <= (54.8 * 1520 / 100)
+    /*if (bg.x >= (66.80 * 1520 / 100) && bg.x <= (71.8 * 1520 / 100) ||
+        bg.x >= (94.5 * 1520 / 100) && bg.x <= (99.2 * 1520 / 100)) {
+        //marco.y = 220;
+        console.log('primer salto');
+        
+    }*/
 
-    if (rebel2.collision(marco)) {
-        if ((frames % 100 === 0)) {
-            rebel2.knife();
-            marco.deadKnife();
-            marcoDead.play();
-            endGame();
-            //marco.vanish();
-            lifes -= 1;
-        }
-    } else if (rebel3.collision(marco)) {
-        if ((frames % 100 === 0)) {
-            rebel3.knife();
-            marco.deadKnife();
-            marcoDead.play();
-            endGame();
-            //marco.vanish();
-            lifes -= 1;
+    if (edge1.collision(marco)) {
+        console.log("marco")
+        if (marco.y < 230) {
+            marco.y = 170;
         }
     }
 
@@ -175,20 +235,20 @@ function updatePositions() {
         if ((frames % 100 === 0)) {
             veteranOne.free();
             veteranOne.showing();
+            //veteranOne.running();
             tenkiu.play();
-            //marco.vanish();
         }
     } else if (veteranTwo.collision(marco)) {
         if ((frames % 100 === 0)) {
             veteranTwo.freeVeteran();
             veteranTwo.showing();
+            //veteranTwo.running();
             tenkiu.play();
-            //marco.vanish();
         }
     }
 
     if (rock.collision(marco)) {
-        console.log("colision con la roca marco ", marco.x, "bgx", bg.x)
+        //console.log("colision con la roca marco ", marco.x, "bgx", bg.x)
     }
 
     if (pig.collision(marco)) {
@@ -199,26 +259,28 @@ function updatePositions() {
 
 function rebelMove() {
     if ((frames % 10 === 0)) {
-        //console.log(rebel3.x)
         if (rebel3.x > 400 && scream == 0) {
             rebel3.x -= 10;
-            //console.log("resta")
-        } else {
+        } else if (rebel3.x < 700) {
             rebel3.x += 10;
             scream += 1;
             rebel3.scream();
-            //rebelScream.play();
-            //console.log(rebel3.x);
+        } else if (rebel3.x >= 700) {
+            rebel3.shooting();
+            if (frames % 80 === 0) {
+                generateFireEnemies(rebel3.x, rebel3.y);
+            }
         }
     }
-
 }
 
-function endGame() {
+function endGame(x, y) {
     if (lifes <= 0) {
         music.pause();
         gameOver.draw();
         requestId = undefined;
+    } else {
+        generatePlayers(x, y);
     }
 
 
@@ -227,12 +289,13 @@ function endGame() {
 function right() {
     pig.x = pig.x - 12;
     rock.x = rock.x - 12;
-    rebel1.x = rebel1.x - 12;
-    rebel2.x = rebel2.x - 12;
-    rebel3.x = rebel3.x - 12;
+    rebels.forEach(rebelr => {
+        rebelr.x -= 12;
+    });
 
-    veteranOne.x = veteranOne.x - 12;
-    veteranTwo.x = veteranTwo.x - 12;
+    veteranOne.x -= 12;
+    veteranTwo.x -= 12;
+    edge1.x -= 12;
 
     marco.walking('right');
     walking += 1;
@@ -245,14 +308,13 @@ function right() {
     if (bg.x > (38.8 * 1520) / 100) {
         marco.y = 295;
     }
-    //console.log("bg", bg.x, "marco", marco.x, "pig", pig.x, "rebel3", rebel3.x);
+    //console.log("bg", bg.x, "marco", marco.x, "marcoy", marco.y, "rebel3", rebel3.x, "rebel4", rebel4.x);
 }
 
 
 
 function down() {
     marco.down();
-    //console.log("movimiento hacia abajo");
 }
 
 function left() {
@@ -269,9 +331,11 @@ function up() {
 }
 
 function jump() {
-    marco.jump();
-    marco.y -= 70;
-    //console.log("movimiento", marco.y);
+    if (marco.y != 180) {
+        marco.jump();
+        marco.y -= 70;
+    }
+    console.log("movimiento", marco.y);
 }
 
 
@@ -302,11 +366,12 @@ addEventListener("keydown", (e) => {
             jump();
             break;
         case 65:
-            generateShoots();
-            marco.shoot();
-            //fireMarco.x = marco.x + 20;
-            //fireMarco.y = marco.y - 50;
-            console.log("disparo con a");
+            if (players.length) {
+                generateShoots();
+                marco.shoot();
+            }
+
+            //console.log("disparo con a");
             break;
         case 83:
             console.log("disparo con granada");
@@ -344,15 +409,16 @@ function update() {
     counterUnit.draw(5);
     counterDent.draw(9);
 
-    marco.draw();
+
     pig.draw();
     rock.draw();
     drawRebels();
     drawVeterans();
-
+    drawPlayer();
     shootingf();
     updatePositions();
-    rebelMove();
+    //rebelMove();
+    shootingEnemies();
     if (requestId) {
         requestId = requestAnimationFrame(update);
     }

@@ -52,7 +52,7 @@ class Rock {
     }
 }
 
-class Fire {
+class Fire { //63
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
@@ -65,7 +65,7 @@ class Fire {
     draw() {
         this.x += 4;
         ctx.drawImage(this.image,
-            25, 63,
+            25, 385,
             20, 20,
             this.x, this.y,
             this.width, this.height);
@@ -77,11 +77,41 @@ class Fire {
             this.x + this.width > item.x &&
             this.y < item.y + item.height &&
             this.y + this.height > item.y
-        )
+        );
     }
 
 
 
+}
+
+
+class FireEnemies {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = './images/common/common.png';
+    }
+
+    draw() {
+        this.x -= 4;
+        ctx.drawImage(this.image,
+            25, 67,
+            20, 20,
+            this.x, this.y,
+            this.width, this.height);
+    }
+
+    collision(item) {
+        return (
+            this.x < item.x + item.width &&
+            this.x + this.width > item.x &&
+            this.y < item.y + item.height &&
+            this.y + this.height > item.y
+        );
+    }
 }
 class Header {
 
@@ -168,8 +198,21 @@ class Edges {
         this.height = height;
     }
 
+    draw() {
+        //ctx.clearRect(0, 0, 300, 300);
+
+        // colors rectangle with this color
+        ctx.fillStyle = 'green';
+
+        // creates rectangle => ctx.fillRect(x, y, width, height);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+
+
 
     collision(marco) {
+        //console.log(this.x, marco.x, marco.width, this.y, this.height, marco.y)
         return (
             this.x < marco.x + marco.width &&
             this.x + this.width > marco.x &&

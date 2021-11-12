@@ -6,9 +6,6 @@ class MarcoRossi extends Sprite {
         super(x, y, 51, 48, width, height, 16, src, 4, row);
     }
 
-    vanish() {
-        this.row = 0;
-    }
 
     stay() {
         console.log("stay")
@@ -55,12 +52,13 @@ class MarcoRossi extends Sprite {
         this.spriteIndex = 0;
         this.row = 6;
         this.speed = 8;
+
     }
     shoot() {
         this.numSprites = 10;
         this.spriteIndex = 0;
         this.row = 7;
-        this.speed = 5;
+        this.speed = 1;
 
     }
     jump() {
@@ -70,11 +68,16 @@ class MarcoRossi extends Sprite {
         this.speed = 8;
     }
 
-    fire() {
-        this.numSprites = 61;
-        this.spriteIndex = 0;
-        this.row = 9;
-        this.speed = 16;
+
+
+    collision(item) {
+        //console.log(this.x, marco.x, marco.width, this.y, marco.y, marco.height)
+        return (
+            this.x < item.x + item.width &&
+            this.x + this.width > item.x &&
+            this.y < item.y + item.height &&
+            this.y + this.height > item.y
+        );
     }
 
 

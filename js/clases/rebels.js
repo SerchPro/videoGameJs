@@ -1,9 +1,10 @@
 class Rebel extends Sprite {
-    constructor(x, y, width, height, row) {
+    constructor(x, y, width, height, numSprites, row, shoot = false) {
 
         const src = './images/rebels/rebel.png';
 
-        super(x, y, 62, 65, width, height, 14, src, 12, row);
+        super(x, y, 62, 65, width, height, 14, src, numSprites, row);
+        this.shoot = shoot;
     }
 
     deadKnife() {
@@ -37,7 +38,6 @@ class Rebel extends Sprite {
     }
 
     walking() {
-
         this.numSprites = 15;
         this.spriteIndex = 0;
         this.row = 4;
@@ -52,6 +52,14 @@ class Rebel extends Sprite {
             this.speed = 10;
         }
 
+    }
+
+    shooting() {
+        this.numSprites = 4;
+        this.spriteIndex = 0;
+        this.row = 7;
+        this.speed = 10;
+        this.shoot = true;
     }
 
     collision(marco) {

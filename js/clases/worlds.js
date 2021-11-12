@@ -9,6 +9,7 @@ class EndGame {
     }
 
     draw() {
+        ctx.clearRect(this.x, this.y, this.width, this.height);
         ctx.drawImage(this.image, this.x, this.y, 305, 230, 0, this.y, this.width, this.height);
     }
 }
