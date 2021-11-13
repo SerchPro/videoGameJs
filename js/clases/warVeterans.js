@@ -34,6 +34,7 @@ class Heroe extends Sprite {
     }
 
     running() {
+
         this.numSprites = 8;
         this.spriteIndex = 0;
         this.row = 4;

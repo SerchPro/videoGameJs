@@ -8,7 +8,6 @@ class MarcoRossi extends Sprite {
 
 
     stay() {
-        console.log("stay")
         this.numSprites = 4;
         this.spriteIndex = 0;
         this.row = 0;
@@ -26,7 +25,6 @@ class MarcoRossi extends Sprite {
 
     walking(sideWalk) {
         if (sideWalk === 'right' && walking == 1) {
-            console.log("walking right")
             this.numSprites = 7;
             this.spriteIndex = 0;
             this.row = 1;
@@ -47,6 +45,13 @@ class MarcoRossi extends Sprite {
         this.speed = 10;
     }
 
+    knife() {
+        this.numSprites = 6;
+        this.spriteIndex = 0;
+        this.row = 4;
+        this.speed = 8;
+    }
+
     deadKnife() {
         this.numSprites = 13;
         this.spriteIndex = 0;
@@ -65,6 +70,13 @@ class MarcoRossi extends Sprite {
         this.numSprites = 6;
         this.spriteIndex = 0;
         this.row = 8;
+        this.speed = 8;
+    }
+
+    win() {
+        this.numSprites = 6;
+        this.spriteIndex = 0;
+        this.row = 9;
         this.speed = 8;
     }
 
