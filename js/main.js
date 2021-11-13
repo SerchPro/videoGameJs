@@ -64,11 +64,11 @@ function insertCoins() {
 
     gameOver = new EndGame(canvas.width, canvas.height);
     bg = new MisionOne(canvas.width, canvas.height);
-    header = new Header(40, 20, 100, 75);
-    life = new Life(80, 30, 80, 75);
-    Arms = new Arms(150, 20, 100, 75);
-    counterUnit = new Counter(250, 20, 100, 170);
-    counterDent = new Counter(270, 20, 100, 170);
+    header = new Header(50, 20, 100, 75);
+    life = new Life(90, 30, 80, 75);
+    Arms = new Arms(160, 20, 100, 75);
+    counterUnit = new Counter(260, 20, 100, 170);
+    counterDent = new Counter(280, 20, 100, 170);
     /*jugador*/
 
     /* Bonus */
@@ -119,13 +119,17 @@ function generateRebels() {
     rebel6 = new Rebel(700, 220, 125, 140, 12, 5, shoot = true, move = false);
     // segunda sesion 
 
-    rebel6 = new Rebel(2500, 270, 125, 140, 12, 5, shoot = false, move = false);
+
     rebel7 = new Rebel(3200, 285, 125, 140, 4, 7, shoot = true, move = false);
     rebel8 = new Rebel(3400, 285, 125, 140, 12, 5, shoot = false, move = false);
     rebel9 = new Rebel(3600, 285, 125, 140, 4, 7, shoot = true, move = false);
 
+    rebel6 = new Rebel(2500, 270, 125, 140, 12, 5, shoot = false, move = false);
+    rebel10 = new Rebel(3700, 285, 125, 140, 16, 4, shoot = false, move = true);
+    rebel11 = new Rebel(3650, 270, 125, 140, 12, 5, shoot = false, move = false);
+
     rebels = [
-        rebel1, rebel2, rebel3, rebel4, rebel5, rebel6, rebel7, rebel8, rebel9
+        rebel1, rebel2, rebel3, rebel4, rebel5, rebel6, rebel8, rebel10, rebel11, rebel7
     ];
     //rebel1, rebel2, rebel3, rebel4, rebel5, rebel6,rebel7, rebel8, rebel9
 }
@@ -165,7 +169,7 @@ function generateShoots() {
 }
 
 function generateFireEnemies(x, y) {
-    fire = new FireEnemies(x - 25, y + 80, 40, 40);
+    fire = new FireEnemies(x - 25, y + 75, 35, 35);
     firesEnemies.push(fire);
 }
 
@@ -181,7 +185,6 @@ function shootingEnemies() {
             if (fire.collision(player)) {
                 player.deadKnife();
                 players.splice(index_player, 1);
-                lifes -= 1;
                 marcoDead.play();
                 endGame(player.x, player.y);
 
@@ -240,11 +243,7 @@ function updatePositions() {
         marco.win();
     }
 
-    if (bg.x > (38.8 * 1520) / 100) {
-        if (frames % 60 === 0) {
-            marco.y = 300;
-        }
-    }
+
 
     if (rock.collision(marco)) {
         //console.log("colision con la roca marco ", marco.x, "bgx", bg.x)
@@ -252,6 +251,7 @@ function updatePositions() {
 
     if (pig.collision(marco)) {
         pig.dead();
+        coinSound.play();
         score += 100;
     }
 }
@@ -264,6 +264,11 @@ function endGame() {
 }
 
 function right() {
+
+    if (bg.x > (38.8 * 1520) / 100) {
+        marco.y = 300;
+    }
+
     pig.x = pig.x - 12;
     rock.x = rock.x - 12;
     rebels.forEach(rebel => {
@@ -305,7 +310,7 @@ function jump() {
         marco.y = 180;
     } else if (marco.y == 300) {
         marco.jump();
-        marco.y = 225;
+        marco.y = 200;
     }
 }
 
@@ -345,7 +350,7 @@ addEventListener("keyup", (e) => {
         if (marco.y == 180) {
             marco.stay();
             marco.y = 250;
-        } else if (marco.y == 225) {
+        } else if (marco.y == 200) {
             marco.stay();
             marco.y = 300;
         }

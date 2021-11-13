@@ -105,7 +105,9 @@ class FireEnemies {
     }
 
     collision(item) {
+        console.log(item.x + item.width, this.x)
         return (
+
             this.x < item.x + item.width &&
             this.x + this.width > item.x &&
             this.y < item.y + item.height &&
